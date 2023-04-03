@@ -37,15 +37,9 @@ public class EntityWithLobs extends PanacheEntityBase
 	@Column(name = "`log`")
 	public byte[] log;
 
-	public static List<EntityWithLobs> list(boolean loadLOBs)
+	public static List<EntityWithLobs> oneResultWithClassCastException()
 	{
-		var q = EntityWithLobs.<EntityWithLobs>findAll();
-		if (loadLOBs)
-		{
-			q = q.withHint(GraphSemantic.FETCH.getJpaHintName(),
-					Panache.getEntityManager().getEntityGraph("EntityWithLobs.withLobs"));
-		}
-		return q.firstResult();
+		return EntityWithLobs.<EntityWithLobs>findAll().firstResult();
 	}
 
 	public static EntityWithLobs uniqueResult(boolean loadLOBs)
