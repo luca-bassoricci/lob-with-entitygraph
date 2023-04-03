@@ -2,19 +2,20 @@ package org.acme;
 
 import java.util.List;
 
-import org.hibernate.jpa.AvailableHints;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.Table;
+
+import org.hibernate.graph.GraphSemantic;
 
 import io.quarkus.hibernate.orm.panache.Panache;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
-import jakarta.persistence.NamedAttributeNode;
-import jakarta.persistence.NamedEntityGraph;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "entity_with_lobs")
@@ -41,7 +42,7 @@ public class EntityWithLobs extends PanacheEntityBase
 		var q = EntityWithLobs.<EntityWithLobs>findAll();
 		if (loadLOBs)
 		{
-			q = q.withHint(AvailableHints.HINT_SPEC_FETCH_GRAPH,
+			q = q.withHint(GraphSemantic.FETCH.getJpaHintName(),
 					Panache.getEntityManager().getEntityGraph("EntityWithLobs.withLobs"));
 		}
 		return q.firstResult();
@@ -52,7 +53,7 @@ public class EntityWithLobs extends PanacheEntityBase
 		var q = EntityWithLobs.<EntityWithLobs>findAll();
 		if (loadLOBs)
 		{
-			q = q.withHint(AvailableHints.HINT_SPEC_FETCH_GRAPH,
+			q = q.withHint(GraphSemantic.FETCH.getJpaHintName(),
 					Panache.getEntityManager().getEntityGraph("EntityWithLobs.withLobs"));
 		}
 		return q.firstResult();
